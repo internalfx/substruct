@@ -24,8 +24,5 @@ module.exports = {
     'httpError',
     'session',
     'router'
-  ],
-
-  beforeMiddleware: async function () {},
-  afterMiddleware: async function () {}
+  ]
 }
