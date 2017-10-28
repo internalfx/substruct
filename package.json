@@ -1,0 +1,33 @@
+{
+  "name": "substruct",
+  "description": "A node.js framework",
+  "version": "0.0.1",
+  "homepage": "https://github.com/internalfx/substruct",
+  "author": {
+    "name": "Bryan Morris",
+    "email": "bryan@internalfx.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/internalfx/substruct.git"
+  },
+  "bugs": {
+    "url": "https://github.com/internalfx/substruct/issues"
+  },
+  "license": "MIT",
+  "main": "slushfile.js",
+  "dependencies": {
+    "app-root-path": "^2.0.1",
+    "ejs": "^2.5.7",
+    "koa": "^2.3.0",
+    "koa-body": "^2.5.0",
+    "lodash": "^4.17.4",
+    "lru-cache": "^4.1.1",
+    "minimist": "^1.2.0",
+    "nodemailer": "^4.3.1",
+    "nodemailer-direct-transport": "^3.3.2",
+    "object-hash": "^1.2.0",
+    "path-to-regexp": "^2.1.0",
+    "require-all": "^2.2.0"
+  }
+}

@@ -1,0 +1,4 @@
+node_modules
+ignored_files
+.tmp
+database.sqlite
