@@ -18,6 +18,8 @@
   "main": "slushfile.js",
   "dependencies": {
     "app-root-path": "^2.0.1",
+    "bluebird": "^3.5.1",
+    "consolidate": "^0.14.5",
     "ejs": "^2.5.7",
     "koa": "^2.3.0",
     "koa-body": "^2.5.0",
