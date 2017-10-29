@@ -1,6 +1,8 @@
 let substruct
 let meta = {}
+let services = {}
 
+const Promise = require('bluebird')
 const path = require('path')
 const minimist = require('minimist')
 const Koa = require('koa')
@@ -19,30 +21,39 @@ config = Object.assign({}, defaultConfig, config, env)
 config.appDir = appDir
 config.apiDir = path.join(appDir, 'api')
 config.confDir = path.join(appDir, 'config')
+config.sysDir = path.join(appDir, 'system')
 
 let koa = new Koa()
 koa.proxy = config.koa.proxy
 
 let init = async function () {
-  var builtInMiddleware = requireAll({
+  // Initialize Services
+  let rawServices = requireAll({
+    dirname: path.join(config.sysDir, 'services')
+  })
+
+  for (let name of Object.keys(rawServices)) {
+    let fn = rawServices[name]
+    substruct.services[name] = await Promise.resolve(fn(config))
+  }
+
+  // Initialize Middleware
+  let builtInMiddleware = requireAll({
     dirname: path.join(__dirname, 'lib', 'middleware')
   })
 
-  var customMiddleware = requireAll({
-    dirname: path.join(config.appDir, 'middleware')
+  let customMiddleware = requireAll({
+    dirname: path.join(config.sysDir, 'middleware')
   })
 
   let middleware = Object.assign({}, builtInMiddleware, customMiddleware)
 
-  console.log(`============ Loading MiddleWare ===========`)
   for (let name of config.middleware) {
-    console.log(name)
     if (middleware[name] == null) {
       throw new Error(`Middleware "${name}" does not exist`)
     }
     koa.use(middleware[name](config))
   }
-  console.log(`*******************************************`)
 
   return substruct
 }
@@ -50,7 +61,8 @@ let init = async function () {
 substruct = Object.freeze({
   config,
   koa,
-  meta,
+  meta: {},
+  services,
   init
 })
 
