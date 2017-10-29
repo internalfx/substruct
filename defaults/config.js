@@ -24,5 +24,6 @@ module.exports = {
     'httpError',
     'session',
     'router'
-  ]
+  ],
+  templateEngine: 'ejs'
 }
