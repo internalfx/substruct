@@ -32,7 +32,7 @@ let init = async function () {
     dirname: path.join(config.sysDir, 'services')
   })
 
-  for (let name of Object.keys(rawServices)) {
+  for (let name of config.services) {
     let fn = rawServices[name]
     substruct.services[name] = await Promise.resolve(fn(config))
   }

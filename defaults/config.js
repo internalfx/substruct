@@ -17,6 +17,7 @@ module.exports = {
     'router'
   ],
   port: 8000,
+  services: [],
   session: {
     sessionCookieName: 'x-substruct-token',
     sessionCookieMaxAge: 1000 * 60 * 60 * 24 * 365,
