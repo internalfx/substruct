@@ -1,5 +1,4 @@
 let substruct
-let meta = {}
 let services = {}
 
 const Promise = require('bluebird')
