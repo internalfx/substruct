@@ -32,6 +32,9 @@ let init = async function () {
   })
 
   for (let name of config.services) {
+    if (rawServices[name] == null) {
+      throw new Error(`"${name}" service not found.`)
+    }
     let fn = rawServices[name]
     substruct.services[name] = await Promise.resolve(fn(config))
   }
@@ -49,7 +52,7 @@ let init = async function () {
 
   for (let name of config.middleware) {
     if (middleware[name] == null) {
-      throw new Error(`Middleware "${name}" does not exist`)
+      throw new Error(`"${name}" middleware not found.`)
     }
     koa.use(middleware[name](config))
   }
