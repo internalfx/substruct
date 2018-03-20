@@ -1,7 +1,7 @@
 {
   "name": "substruct",
   "description": "A node.js framework",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "homepage": "https://github.com/internalfx/substruct",
   "author": {
     "name": "Bryan Morris",
