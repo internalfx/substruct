@@ -28,6 +28,7 @@
     "minimist": "^1.2.0",
     "nodemailer": "^4.3.1",
     "nodemailer-direct-transport": "^3.3.2",
+    "nunjucks": "^3.1.2",
     "object-hash": "^1.2.0",
     "path-to-regexp": "^2.1.0",
     "require-all": "^2.2.0"
