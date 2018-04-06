@@ -1,10 +1,5 @@
-const minimist = require('minimist')
-let argv = minimist(process.argv.slice(2))
 
 module.exports = {
-  development: !argv.prod,
-  production: !!argv.prod,
-
   koa: {
     proxy: false
   },

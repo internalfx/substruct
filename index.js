@@ -3,19 +3,26 @@ let services = {}
 
 const Promise = require('bluebird')
 const path = require('path')
-const minimist = require('minimist')
 const Koa = require('koa')
 const requireAll = require('require-all')
 
 let defaultConfig = require('./defaults/config')
 
-let argv = minimist(process.argv.slice(2))
-
 let appDir = process.cwd()
-let config = require(path.join(appDir, 'config', 'config.js'))
-let env = require(path.join(appDir, 'config', 'env', argv.prod ? 'prod.js' : 'dev.js'))
+let configDir = path.join(appDir, 'config')
+let config = require(path.join(configDir, 'config.js'))
 
-config = Object.assign({}, defaultConfig, config, env)
+config.env = process.env.NODE_ENV || 'development'
+
+let envConfig = (function () {
+  if (config.env === 'production') {
+    return require(path.join(configDir, 'env', 'prod.js'))
+  } else {
+    return require(path.join(configDir, 'env', 'dev.js'))
+  }
+}())
+
+config = Object.assign({}, defaultConfig, config, envConfig)
 
 config.appDir = appDir
 config.apiDir = path.join(appDir, 'api')
@@ -26,6 +33,9 @@ let koa = new Koa()
 koa.proxy = config.koa.proxy
 
 let init = async function () {
+  console.log(`**************** SUBSTRUCT SERVER ***************`)
+  console.log(`*  env = '${config.env}'`)
+  console.log(`*************************************************`)
   // Initialize Services
   let rawServices = requireAll({
     dirname: path.join(config.sysDir, 'services')
