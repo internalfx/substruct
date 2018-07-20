@@ -17,20 +17,20 @@
   "license": "MIT",
   "main": "slushfile.js",
   "dependencies": {
-    "app-root-path": "^2.0.1",
+    "app-root-path": "^2.1.0",
     "bluebird": "^3.5.1",
-    "consolidate": "^0.14.5",
-    "ejs": "^2.5.7",
-    "koa": "^2.3.0",
-    "koa-body": "^2.5.0",
-    "lodash": "^4.17.4",
-    "lru-cache": "^4.1.1",
+    "consolidate": "^0.15.1",
+    "ejs": "^2.6.1",
+    "koa": "^2.5.2",
+    "koa-body": "^4.0.4",
+    "lodash": "^4.17.10",
+    "lru-cache": "^4.1.3",
     "minimist": "^1.2.0",
-    "nodemailer": "^4.3.1",
+    "nodemailer": "^4.6.7",
     "nodemailer-direct-transport": "^3.3.2",
-    "nunjucks": "^3.1.2",
-    "object-hash": "^1.2.0",
-    "path-to-regexp": "^2.1.0",
-    "require-all": "^2.2.0"
+    "nunjucks": "^3.1.3",
+    "object-hash": "^1.3.0",
+    "path-to-regexp": "^2.2.1",
+    "require-all": "^3.0.0"
   }
 }

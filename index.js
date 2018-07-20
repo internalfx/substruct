@@ -1,36 +1,53 @@
-let substruct
-let services = {}
 
-const Promise = require('bluebird')
-const path = require('path')
-const Koa = require('koa')
-const requireAll = require('require-all')
+let Promise = require('bluebird')
+let path = require('path')
+let Koa = require('koa')
+let requireAll = require('require-all')
+let fs = require('fs')
+let configured = false
 
-let defaultConfig = require('./defaults/config')
+let substruct = function (spec = {}) {
+  if (configured) { return substruct }
+  let manualConfig = spec.config || {}
 
-let appDir = process.cwd()
-let configDir = path.join(appDir, 'config')
-let config = require(path.join(configDir, 'config.js'))
+  let appDir = spec.appDir || process.cwd()
+  let configDir = path.join(appDir, 'config')
 
-config.env = process.env.NODE_ENV || 'development'
-
-let envConfig = (function () {
-  if (config.env === 'production') {
-    return require(path.join(configDir, 'env', 'prod.js'))
-  } else {
-    return require(path.join(configDir, 'env', 'dev.js'))
+  if (fs.existsSync(path.join(configDir, 'config.js'))) {
+    Object.assign(config, require(path.join(configDir, 'config.js')))
   }
-}())
 
-config = Object.assign({}, defaultConfig, config, envConfig)
+  config.env = process.env.NODE_ENV || 'development'
 
-config.appDir = appDir
-config.apiDir = path.join(appDir, 'api')
-config.confDir = path.join(appDir, 'config')
-config.sysDir = path.join(appDir, 'system')
+  let envConfig = (function () {
+    let prodEnvPath = path.join(configDir, 'env', 'prod.js')
+    let devEnvPath = path.join(configDir, 'env', 'dev.js')
 
+    if (config.env === 'production' && fs.existsSync(prodEnvPath)) {
+      return require(prodEnvPath)
+    } else if (config.env === 'development' && fs.existsSync(devEnvPath)) {
+      return require(devEnvPath)
+    } else {
+      return {}
+    }
+  }())
+
+  Object.assign(config, envConfig, manualConfig)
+
+  config.appDir = appDir
+  config.apiDir = path.join(appDir, 'api')
+  config.confDir = path.join(appDir, 'config')
+  config.sysDir = path.join(appDir, 'system')
+
+  koa.proxy = config.koa.proxy
+
+  configured = true
+  return substruct
+}
+
+let services = {}
+let config = require('./defaults/config')
 let koa = new Koa()
-koa.proxy = config.koa.proxy
 
 let init = async function () {
   console.log(`**************** SUBSTRUCT SERVER ***************`)
@@ -70,12 +87,10 @@ let init = async function () {
   return substruct
 }
 
-substruct = Object.freeze({
-  config,
-  koa,
-  meta: {},
-  services,
-  init
-})
+substruct.config = config
+substruct.koa = koa
+substruct.meta = {}
+substruct.services = services
+substruct.init = init
 
 module.exports = substruct
