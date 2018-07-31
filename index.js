@@ -5,9 +5,13 @@ let Koa = require('koa')
 let requireAll = require('require-all')
 let fs = require('fs')
 let configured = false
+let substruct = {}
+let services = {}
+let config = require('./defaults/config')
+let koa = new Koa()
 
-let substruct = function (spec = {}) {
-  if (configured) { return substruct }
+substruct.configure = function (spec = {}) {
+  if (configured) { return }
   let manualConfig = spec.config || {}
 
   let appDir = spec.appDir || process.cwd()
@@ -42,14 +46,12 @@ let substruct = function (spec = {}) {
   koa.proxy = config.koa.proxy
 
   configured = true
-  return substruct
 }
 
-let services = {}
-let config = require('./defaults/config')
-let koa = new Koa()
-
-let init = async function () {
+substruct.start = async function () {
+  if (configured !== true) {
+    throw new Error('Substruct has not been configured yet! Call substruct.configure() before start()')
+  }
   console.log(`**************** SUBSTRUCT SERVER ***************`)
   console.log(`*  env = '${config.env}'`)
   console.log(`*************************************************`)
@@ -91,6 +93,5 @@ substruct.config = config
 substruct.koa = koa
 substruct.meta = {}
 substruct.services = services
-substruct.init = init
 
 module.exports = substruct
