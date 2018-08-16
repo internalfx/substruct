@@ -9,6 +9,7 @@ let substruct = {}
 let services = {}
 let config = require('./defaults/config')
 let koa = new Koa()
+let http = require('http')
 
 substruct.configure = function (spec = {}) {
   if (configured) { return }
@@ -46,6 +47,8 @@ substruct.configure = function (spec = {}) {
   koa.proxy = config.koa.proxy
 
   configured = true
+
+  return config
 }
 
 substruct.start = async function () {
@@ -86,11 +89,14 @@ substruct.start = async function () {
     koa.use(middleware[name](config))
   }
 
+  substruct.server.listen(config.port)
+
   return substruct
 }
 
 substruct.config = config
 substruct.koa = koa
+substruct.server = http.createServer(koa.callback())
 substruct.meta = {}
 substruct.services = services
 
