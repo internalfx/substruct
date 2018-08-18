@@ -20,6 +20,7 @@
     "app-root-path": "^2.1.0",
     "bluebird": "^3.5.1",
     "consolidate": "^0.15.1",
+    "cookie": "^0.3.1",
     "ejs": "^2.6.1",
     "koa": "^2.5.2",
     "koa-body": "^4.0.4",
