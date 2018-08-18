@@ -74,7 +74,6 @@ substruct.start = async function () {
     if (services[name] == null) {
       throw new Error(`"${name}" service not found.`)
     }
-    console.log(services)
     let fn = services[name]
     substruct.services[name] = await Promise.resolve(fn(config))
   }
