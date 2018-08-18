@@ -58,16 +58,24 @@ substruct.start = async function () {
   console.log(`**************** SUBSTRUCT SERVER ***************`)
   console.log(`*  env = '${config.env}'`)
   console.log(`*************************************************`)
+
   // Initialize Services
-  let rawServices = requireAll({
+  let builtInServices = requireAll({
+    dirname: path.join(__dirname, 'lib', 'services')
+  })
+
+  let customServices = requireAll({
     dirname: path.join(config.sysDir, 'services')
   })
 
+  let services = Object.assign({}, builtInServices, customServices)
+
   for (let name of config.services) {
-    if (rawServices[name] == null) {
+    if (services[name] == null) {
       throw new Error(`"${name}" service not found.`)
     }
-    let fn = rawServices[name]
+    console.log(services)
+    let fn = services[name]
     substruct.services[name] = await Promise.resolve(fn(config))
   }
 
