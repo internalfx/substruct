@@ -101,6 +101,11 @@ substruct.start = async function () {
   return substruct
 }
 
+substruct.stop = async function () {
+  console.log('Stopping server...')
+  substruct.server.close()
+}
+
 substruct.config = config
 substruct.koa = koa
 substruct.server = http.createServer(koa.callback())
