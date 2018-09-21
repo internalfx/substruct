@@ -10,6 +10,7 @@ let services = {}
 let config = require('./defaults/config')
 let koa = new Koa()
 let http = require('http')
+let argv = require('minimist')(process.argv.slice(2))
 
 substruct.configure = function (spec = {}) {
   if (configured) { return }
@@ -22,7 +23,17 @@ substruct.configure = function (spec = {}) {
     Object.assign(config, require(path.join(configDir, 'config.js')))
   }
 
-  config.env = process.env.NODE_ENV || 'development'
+  config.env = (function () {
+    if (argv['prod'] === true) {
+      return 'production'
+    }
+
+    if (process.env.NODE_ENV != null) {
+      return process.env.NODE_ENV
+    }
+
+    return 'development'
+  }())
 
   let envConfig = (function () {
     let prodEnvPath = path.join(configDir, 'env', 'prod.js')
