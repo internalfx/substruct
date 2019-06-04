@@ -15,7 +15,7 @@ module.exports = {
   services: [],
   session: {
     sessionCookieName: 'x-substruct-token',
-    sessionCookieMaxAge: 1000 * 60 * 60 * 24 * 365,
+    sessionCookieMaxAge: 1000 * 60 * 60 * 24 * 30, // 30 Days
     load: function (token) {
       return null
     },

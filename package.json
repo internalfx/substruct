@@ -1,5 +1,8 @@
 {
-  "name": "substruct",
+  "name": "@internalfx/substruct",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "A node.js framework",
   "version": "2.3.1",
   "homepage": "https://github.com/internalfx/substruct",
@@ -15,25 +18,27 @@
     "url": "https://github.com/internalfx/substruct/issues"
   },
   "license": "MIT",
-  "main": "slushfile.js",
+  "main": "index.js",
   "dependencies": {
     "app-root-path": "^2.2.1",
-    "bluebird": "^3.5.4",
+    "bluebird": "^3.5.5",
     "consolidate": "^0.15.1",
-    "cookie": "^0.3.1",
+    "cookie": "^0.4.0",
     "koa": "^2.7.0",
     "koa-body": "^4.1.0",
     "lodash": "^4.17.11",
-    "lru-cache": "^5.1.1",
     "minimist": "^1.2.0",
-    "nodemailer": "^6.1.1",
-    "nodemailer-direct-transport": "^3.3.2",
     "object-hash": "^1.3.1",
-    "path-to-regexp": "^2.2.1",
+    "path-to-regexp": "^3.0.0",
     "require-all": "^3.0.0"
   },
   "peerDependencies": {
-    "ejs": "^2.6.1",
-    "nunjucks": "^3.1.3"
+    "ejs": "^2.6.1"
+  },
+  "devDependencies": {
+    "eslint": "^4.0.0",
+    "eslint-plugin-html": "^4.0.5",
+    "eslint-plugin-vue": "^4.7.1",
+    "standard": "^12.0.1"
   }
 }
