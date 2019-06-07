@@ -12,11 +12,10 @@ let koa = new Koa()
 let http = require('http')
 let argv = require('minimist')(process.argv.slice(2))
 
-substruct.configure = function (spec = {}) {
+substruct.configure = function (manualConfig = {}) {
   if (configured) { return }
-  let manualConfig = spec.config || {}
 
-  let appDir = spec.appDir || process.cwd()
+  let appDir = manualConfig.appDir || process.cwd()
   let configDir = path.join(appDir, 'config')
 
   if (fs.existsSync(path.join(configDir, 'config.js'))) {
