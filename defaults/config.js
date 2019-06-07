@@ -22,6 +22,5 @@ module.exports = {
     save: function (token, data) {
       return null
     }
-  },
-  templateEngine: 'ejs'
+  }
 }
