@@ -6,14 +6,13 @@ let requireAll = require('require-all')
 let fs = require('fs')
 let configured = false
 let substruct = {}
-let services = {}
 let config = require('./defaults/config')
 let koa = new Koa()
 let http = require('http')
 let argv = require('minimist')(process.argv.slice(2))
 
 substruct.configure = function (manualConfig = {}) {
-  if (configured) { return }
+  if (configured) { return config }
 
   let appDir = manualConfig.appDir || process.cwd()
   let configDir = path.join(appDir, 'config')
@@ -67,6 +66,7 @@ substruct.start = async function () {
   }
   console.log(`**************** SUBSTRUCT SERVER ***************`)
   console.log(`*  env = '${config.env}'`)
+  console.log(`*  port = ${config.port}`)
   console.log(`*************************************************`)
 
   // Initialize Services
@@ -120,6 +120,6 @@ substruct.config = config
 substruct.koa = koa
 substruct.server = http.createServer(koa.callback())
 substruct.meta = {}
-substruct.services = services
+substruct.services = {}
 
 module.exports = substruct
