@@ -33,6 +33,9 @@ substruct.configure = function (manualConfig = {}) {
     return 'development'
   }())
 
+  config.isDevelopment = config.env === 'development'
+  config.isProduction = config.env === 'production'
+
   let envConfig = (function () {
     let prodEnvPath = path.join(configDir, 'env', 'prod.js')
     let devEnvPath = path.join(configDir, 'env', 'dev.js')
