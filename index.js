@@ -109,7 +109,10 @@ substruct.start = async function () {
     koa.use(middleware[name](config))
   }
 
-  substruct.server.listen(config.port)
+  substruct.server.listen({
+    port: config.port,
+    host: config.host
+  })
 
   return substruct
 }
