@@ -67,7 +67,7 @@ substruct.start = async function () {
   if (configured !== true) {
     throw new Error('Substruct has not been configured yet! Call substruct.configure() before start()')
   }
-  console.log(`**************** SUBSTRUCT SERVER ***************`)
+  console.log(`****************** SERVER START *****************`)
   console.log(`*  env = '${config.env}'`)
   console.log(`*  port = ${config.port}`)
   console.log(`*************************************************`)
