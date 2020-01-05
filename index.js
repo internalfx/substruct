@@ -33,6 +33,7 @@ substruct.configure = function (manualConfig = {}) {
     return 'development'
   }())
 
+  config.argv = argv
   config.isDevelopment = config.env === 'development'
   config.isProduction = config.env === 'production'
 
