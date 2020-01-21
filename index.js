@@ -12,7 +12,10 @@ let http = require('http')
 let argv = require('minimist')(process.argv.slice(2))
 
 substruct.configure = function (manualConfig = {}) {
-  if (configured) { return config }
+  if (configured) {
+    throw new Error('Substruct has already been configured! You can only call substruct.configure() once before start()')
+    return config
+  }
 
   let appDir = manualConfig.appDir || process.cwd()
   let configDir = path.join(appDir, 'config')
@@ -115,14 +118,18 @@ substruct.start = async function () {
     host: config.host
   })
 
+  substruct.status = 'running'
+
   return substruct
 }
 
 substruct.stop = async function () {
   console.log('Stopping server...')
   substruct.server.close()
+  substruct.status = 'stopped'
 }
 
+substruct.status = 'stopped'
 substruct.config = config
 substruct.koa = koa
 substruct.server = http.createServer(koa.callback())
