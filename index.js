@@ -5,6 +5,7 @@ let Koa = require('koa')
 let requireAll = require('require-all')
 let fs = require('fs')
 let configured = false
+let loaded = false
 let substruct = {}
 let config = require('./defaults/config')
 let koa = new Koa()
@@ -67,14 +68,14 @@ substruct.configure = function (manualConfig = {}) {
   return config
 }
 
-substruct.start = async function () {
+substruct.load = async function () {
   if (configured !== true) {
     throw new Error('Substruct has not been configured yet! Call substruct.configure() before start()')
   }
-  console.log(`****************** SERVER START *****************`)
-  console.log(`*  env = '${config.env}'`)
-  console.log(`*  port = ${config.port}`)
-  console.log(`*************************************************`)
+
+  if (loaded) {
+    throw new Error('Substruct has already been loaded! You can only call substruct.load() once before start()')
+  }
 
   // Initialize Services
   let builtInServices = requireAll({
@@ -112,6 +113,23 @@ substruct.start = async function () {
     }
     koa.use(middleware[name](config))
   }
+
+  return substruct
+}
+
+substruct.start = async function () {
+  if (configured !== true) {
+    throw new Error('Substruct has not been configured yet! Call substruct.configure() and substruct.load() before start()')
+  }
+
+  if (loaded !== true) {
+    throw new Error('Substruct has not been loaded yet! Call substruct.load() before start()')
+  }
+
+  console.log(`****************** SERVER START *****************`)
+  console.log(`*  env = '${config.env}'`)
+  console.log(`*  port = ${config.port}`)
+  console.log(`*************************************************`)
 
   substruct.server.listen({
     port: config.port,
