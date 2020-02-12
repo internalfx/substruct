@@ -114,6 +114,8 @@ substruct.load = async function () {
     koa.use(middleware[name](config))
   }
 
+  loaded = true
+
   return substruct
 }
 
