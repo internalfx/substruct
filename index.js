@@ -1,32 +1,31 @@
 
-let Promise = require('bluebird')
-let path = require('path')
-let Koa = require('koa')
-let requireAll = require('require-all')
-let fs = require('fs')
+const Promise = require('bluebird')
+const path = require('path')
+const Koa = require('koa')
+const requireAll = require('require-all')
+const fs = require('fs')
 let configured = false
 let loaded = false
-let substruct = {}
-let config = require('./defaults/config')
-let koa = new Koa()
-let http = require('http')
-let argv = require('minimist')(process.argv.slice(2))
+const substruct = {}
+const config = require('./defaults/config')
+const koa = new Koa()
+const http = require('http')
+const argv = require('minimist')(process.argv.slice(2))
 
 substruct.configure = function (manualConfig = {}) {
   if (configured) {
     throw new Error('Substruct has already been configured! You can only call substruct.configure() once before start()')
-    return config
   }
 
-  let appDir = manualConfig.appDir || process.cwd()
-  let configDir = path.join(appDir, 'config')
+  const appDir = manualConfig.appDir || process.cwd()
+  const configDir = path.join(appDir, 'config')
 
   if (fs.existsSync(path.join(configDir, 'config.js'))) {
     Object.assign(config, require(path.join(configDir, 'config.js')))
   }
 
   config.env = (function () {
-    if (argv['prod'] === true) {
+    if (argv.prod === true) {
       return 'production'
     }
 
@@ -41,9 +40,9 @@ substruct.configure = function (manualConfig = {}) {
   config.isDevelopment = config.env === 'development'
   config.isProduction = config.env === 'production'
 
-  let envConfig = (function () {
-    let prodEnvPath = path.join(configDir, 'env', 'prod.js')
-    let devEnvPath = path.join(configDir, 'env', 'dev.js')
+  const envConfig = (function () {
+    const prodEnvPath = path.join(configDir, 'env', 'prod.js')
+    const devEnvPath = path.join(configDir, 'env', 'dev.js')
 
     if (config.env === 'production' && fs.existsSync(prodEnvPath)) {
       return require(prodEnvPath)
@@ -78,36 +77,36 @@ substruct.load = async function () {
   }
 
   // Initialize Services
-  let builtInServices = requireAll({
+  const builtInServices = requireAll({
     dirname: path.join(__dirname, 'lib', 'services')
   })
 
-  let customServices = requireAll({
+  const customServices = requireAll({
     dirname: path.join(config.sysDir, 'services')
   })
 
-  let services = Object.assign({}, builtInServices, customServices)
+  const services = Object.assign({}, builtInServices, customServices)
 
-  for (let name of config.services) {
+  for (const name of config.services) {
     if (services[name] == null) {
       throw new Error(`"${name}" service not found.`)
     }
-    let fn = services[name]
+    const fn = services[name]
     substruct.services[name] = await Promise.resolve(fn(config))
   }
 
   // Initialize Middleware
-  let builtInMiddleware = requireAll({
+  const builtInMiddleware = requireAll({
     dirname: path.join(__dirname, 'lib', 'middleware')
   })
 
-  let customMiddleware = requireAll({
+  const customMiddleware = requireAll({
     dirname: path.join(config.sysDir, 'middleware')
   })
 
-  let middleware = Object.assign({}, builtInMiddleware, customMiddleware)
+  const middleware = Object.assign({}, builtInMiddleware, customMiddleware)
 
-  for (let name of config.middleware) {
+  for (const name of config.middleware) {
     if (middleware[name] == null) {
       throw new Error(`"${name}" middleware not found.`)
     }
@@ -128,10 +127,10 @@ substruct.start = async function () {
     throw new Error('Substruct has not been loaded yet! Call substruct.load() before start()')
   }
 
-  console.log(`****************** SERVER START *****************`)
+  console.log('****************** SERVER START *****************')
   console.log(`*  env = '${config.env}'`)
   console.log(`*  port = ${config.port}`)
-  console.log(`*************************************************`)
+  console.log('*************************************************')
 
   substruct.server.listen({
     port: config.port,
