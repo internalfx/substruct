@@ -70,7 +70,7 @@ substruct.configure = function (manualConfig = {}) {
 
 substruct.load = async function () {
   if (configured !== true) {
-    throw new Error('Substruct has not been configured yet! Call substruct.configure() before start()')
+    throw new Error('Substruct has not been configured yet! Call substruct.configure() before load()')
   }
 
   if (loaded) {
