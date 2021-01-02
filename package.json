@@ -4,7 +4,7 @@
     "access": "public"
   },
   "description": "A node.js framework",
-  "version": "5.0.4",
+  "version": "5.1.0",
   "homepage": "https://github.com/internalfx/substruct",
   "author": {
     "name": "Bryan Morris",
