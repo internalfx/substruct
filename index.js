@@ -11,6 +11,7 @@ const config = require('./defaults/config')
 const koa = new Koa()
 const http = require('http')
 const argv = require('minimist')(process.argv.slice(2))
+const cors = require('@koa/cors')
 
 substruct.configure = function (manualConfig = {}) {
   if (configured) {
@@ -26,6 +27,14 @@ substruct.configure = function (manualConfig = {}) {
 
   config.env = (function () {
     if (argv.prod === true) {
+      return 'production'
+    } else if (argv.prod === false) {
+      return 'development'
+    }
+
+    if (argv.dev === true) {
+      return 'development'
+    } else if (argv.dev === false) {
       return 'production'
     }
 
@@ -61,6 +70,7 @@ substruct.configure = function (manualConfig = {}) {
   config.sysDir = path.join(appDir, 'system')
 
   koa.proxy = config.koa.proxy
+  koa.use(cors(config.koa.cors))
 
   configured = true
 
